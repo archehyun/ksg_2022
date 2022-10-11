@@ -160,7 +160,7 @@ public class Mainframe extends JFrame implements ActionListener{
         this.getContentPane().add(body);        
 
         this.setSize(1024,768);
-		
+
         ViewUtil.center(this);
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -182,9 +182,7 @@ public class Mainframe extends JFrame implements ActionListener{
 		menu.setMenus(list);
 		pnTabMain.setMenu(list);		
     }
-
 	
-
     private JComponent createMain()
     {
 
