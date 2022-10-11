@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.ldcc.platform.iws.admin.api.mapper.EnumMapper">
+    <select id="selectByKey" resultType="kr.co.ldcc.platform.iws.admin.api.model.Enum">
+        SELECT service_code,
+            enum_code,
+            enum_name,
+            enum_parent_code,
+            enum_seq,
+            enum_value,
+            is_deleted,
+            event_name,
+            event_user,
+            event_date,
+            event_timekey,
+            description
+        FROM ENUM
+        WHERE is_deleted = 'N'
+            AND service_code = #{serviceCode, mode=IN, jdbcType=VARCHAR}
+            AND enum_code = #{enumCode, mode=IN, jdbcType=VARCHAR}
+    </select>
+
+    <select id="selectDeletedByKey" resultType="kr.co.ldcc.platform.iws.admin.api.model.Enum">
+        SELECT service_code,
+            enum_code,
+            enum_name,
+            enum_parent_code,
+            enum_seq,
+            enum_value,
+            is_deleted,
+            event_name,
+            event_user,
+            event_date,
+            event_timekey,
+            description
+        FROM ENUM
+        WHERE is_deleted = 'Y'
+            AND service_code = #{serviceCode, mode=IN, jdbcType=VARCHAR}
+            AND enum_code = #{enumCode, mode=IN, jdbcType=VARCHAR}
+    </select>
+
+    <select id="select" resultType="kr.co.ldcc.platform.iws.admin.api.model.Enum">
+        SELECT service_code,
+            enum_code,
+            enum_name,
+            enum_parent_code,
+            enum_seq,
+            enum_value,
+            is_deleted,
+            event_name,
+            event_user,
+            event_date,
+            event_timekey,
+            description
+        FROM ENUM
+        WHERE is_deleted = 'N'
+        <if test = "serviceCode != null">
+            AND service_code = #{serviceCode, mode=IN, jdbcType=VARCHAR}
+        </if>
+        <if test = "enumCode != null">
+            AND enum_code = #{enumCode, mode=IN, jdbcType=VARCHAR}
+        </if>
+        <if test = "enumParentCode != null">
+            AND enum_parent_code = #{enumParentCode, mode=IN, jdbcType=VARCHAR}
+        </if>
+        <if test = "enumSeq != null">
+            AND enum_seq = #{enumSeq, mode=IN, jdbcType=INTEGER}
+        </if>
+        <if test = "enumValue != null">
+            AND enum_value = #{enumValue, mode=IN, jdbcType=VARCHAR}
+        </if>
+        <if test = "enumName != null">
+            AND enum_name like #{enumName, mode=IN, jdbcType=VARCHAR}
+        </if>
+        ORDER BY service_code, enum_code
+    </select>
+
+    <select id="selectName" resultType="kr.co.ldcc.platform.iws.admin.api.model.EnumCodeValuePair">
+        SELECT service_code,
+            enum_code,
+            enum_name,
+            enum_value
+        FROM ENUM
+        WHERE is_deleted = 'N'
+            AND service_code = #{serviceCode, mode=IN, jdbcType=VARCHAR}
+        <choose>
+            <when test="enumCodeList == null or enumCodeList.isEmpty()">
+                AND 1 = 0
+            </when>
+            <otherwise>
+                AND enum_code in 
+                <foreach collection="enumCodeList" item="enumCode" open="(" close=")" separator=", ">
+                #{enumCode}
+                </foreach>
+            </otherwise>
+        </choose>
+    </select>
+
+    <insert id="createHistory">
+        INSERT INTO ENUM_HIS (
+            service_code,
+            enum_code,
+            data,
+            is_deleted,
+            event_name,
+            event_user,
+            event_date,
+            event_timekey,
+            description
+        ) VALUES (
+            #{serviceCode, mode=IN, jdbcType=VARCHAR},
+            #{enumCode, mode=IN, jdbcType=VARCHAR},
+            #{data, mode=IN, jdbcType=VARCHAR},
+            #{isDeleted, mode=IN, jdbcType=VARCHAR},
+            #{eventName, mode=IN, jdbcType=VARCHAR},
+            #{eventUser, mode=IN, jdbcType=VARCHAR},
+            #{eventDate, mode=IN, jdbcType=VARCHAR},
+            #{eventTimekey, mode=IN, jdbcType=TIMESTAMP},
+            #{description, mode=IN, jdbcType=VARCHAR}
+        )
+    </insert>
+
+    <insert id="create">
+        INSERT INTO ENUM (
+            service_code,
+            enum_code,
+            enum_name,
+            enum_parent_code,
+            enum_seq,
+            enum_value,
+            is_deleted,
+            event_name,
+            event_user,
+            event_date,
+            event_timekey,
+            description
+        ) VALUES (
+            #{serviceCode, mode=IN, jdbcType=VARCHAR},
+            #{enumCode, mode=IN, jdbcType=VARCHAR},
+            #{enumName, mode=IN, jdbcType=VARCHAR},
+            #{enumParentCode, mode=IN, jdbcType=VARCHAR},
+            #{enumSeq, mode=IN, jdbcType=INTEGER},
+            #{enumValue, mode=IN, jdbcType=VARCHAR},
+            #{isDeleted, mode=IN, jdbcType=VARCHAR},
+            #{eventName, mode=IN, jdbcType=VARCHAR},
+            #{eventUser, mode=IN, jdbcType=VARCHAR},
+            to_char(systimestamp, 'YYYYMMDD'),
+            systimestamp,
+            #{description, mode=IN, jdbcType=VARCHAR}
+        )
+    </insert>
+
+    <update id="updateDeleted">
+        UPDATE ENUM
+        SET enum_name = #{enumName, mode=IN, jdbcType=VARCHAR},
+            enum_parent_code = #{enumParentCode, mode=IN, jdbcType=VARCHAR},
+            enum_seq = #{enumSeq, mode=IN, jdbcType=INTEGER},
+            enum_value = #{enumValue, mode=IN, jdbcType=VARCHAR},
+            is_deleted = #{isDeleted, mode=IN, jdbcType=VARCHAR},
+            event_name = #{eventName, mode=IN, jdbcType=VARCHAR},
+            event_user = #{eventUser, mode=IN, jdbcType=VARCHAR},
+            event_date = to_char(systimestamp, 'YYYYMMDD'),
+            event_timekey = systimestamp,
+            description = #{description, mode=IN, jdbcType=VARCHAR}
+        WHERE is_deleted = 'Y'
+            AND service_code = #{serviceCode, mode=IN, jdbcType=VARCHAR}
+            AND enum_code = #{enumCode, mode=IN, jdbcType=VARCHAR}
+    </update>
+
+    <update id="update">
+        UPDATE ENUM
+        SET enum_name = #{enumName, mode=IN, jdbcType=VARCHAR},
+            enum_parent_code = #{enumParentCode, mode=IN, jdbcType=VARCHAR},
+            enum_seq = #{enumSeq, mode=IN, jdbcType=INTEGER},
+            enum_value = #{enumValue, mode=IN, jdbcType=VARCHAR},
+            event_name = #{eventName, mode=IN, jdbcType=VARCHAR},
+            event_user = #{eventUser, mode=IN, jdbcType=VARCHAR},
+            event_date = to_char(systimestamp, 'YYYYMMDD'),
+            event_timekey = systimestamp,
+            description = #{description, mode=IN, jdbcType=VARCHAR}
+        WHERE is_deleted = 'N'
+            AND service_code = #{serviceCode, mode=IN, jdbcType=VARCHAR}
+            AND enum_code = #{enumCode, mode=IN, jdbcType=VARCHAR}
+    </update>
+
+    <update id="delete">
+        UPDATE ENUM
+        SET is_deleted = #{isDeleted, mode=IN, jdbcType=VARCHAR},
+            event_name = #{eventName, mode=IN, jdbcType=VARCHAR},
+            event_user = #{eventUser, mode=IN, jdbcType=VARCHAR},
+            event_date = to_char(systimestamp, 'YYYYMMDD'),
+            event_timekey = systimestamp,
+            description = #{description, mode=IN, jdbcType=VARCHAR}
+        WHERE is_deleted = 'N'
+            AND service_code = #{serviceCode, mode=IN, jdbcType=VARCHAR}
+            AND enum_code = #{enumCode, mode=IN, jdbcType=VARCHAR}
+    </update>
+</mapper>

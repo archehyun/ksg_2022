@@ -1,0 +1,29 @@
+@startuml user
+
+skinparam monochrome reverse
+
+class "View" as view {
+  - id : int NOT NULL
+  * name : varchar(255)
+  * sex : tinyint
+  --
+  * id : number <<FK>>
+}
+
+class "Model" as model {
+  - id : int NOT NULL
+  * name : varchar(255)
+  * sex : tinyint
+  --
+  * id : number <<FK>>
+}
+
+interface "Controller" as controller {
+  - id : int NOT NULL
+  * name : varchar(255)
+  * sex : tinyint
+  --
+  * id : number <<FK>>
+}
+view --  controller
+@enduml

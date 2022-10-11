@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+    Copyright (c) 2010 IBM Corporation and others.
+    All rights reserved. This program and the accompanying materials
+    are made available under the terms of the Eclipse Public License v1.0
+    which accompanies this distribution, and is available at
+    http://www.eclipse.org/legal/epl-v10.html
+   
+    Contributors:
+        IBM Corporation - initial API and implementation
+ -->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="companyMapper">
+    <select id="selectAll" resultType="com.ksg.api.model.Company">
+		SELECT
+            id,
+			company_name,
+			company_abbr,
+			agent_name,
+			agent_abbr,
+			contents,
+			event_date 
+		FROM TB_COMPANY
+	</select>
+    <select id="selectById" resultType="com.ksg.api.model.Company">
+		SELECT
+			id,
+			company_name,
+			company_abbr,
+			agent_name,
+			agent_abbr,
+			contents,
+			event_date
+		FROM TB_COMPANY
+		WHERE 1=1
+		<if test = "id != null">
+            AND id =#{id}
+        </if>
+	</select>
+    <select id="selectByKey" resultType="com.ksg.api.model.Company">
+		SELECT
+			id,
+			company_name,
+			company_abbr,
+			agent_name,
+			agent_abbr,
+			contents,
+			event_date 
+		FROM TB_COMPANY
+		WHERE 1=1
+		AND company_name = #{company_name}
+	</select>	
+	<select id="selectByCondition" resultType="com.ksg.api.model.Company">
+		SELECT
+			id,
+			company_name,
+			company_abbr,
+			agent_name,
+			agent_abbr,
+			contents,
+			event_date
+		FROM TB_COMPANY
+		WHERE 1=1
+		<if test = "id > 0">
+            AND id =#{id}
+        </if>
+
+		<if test = "company_name != null and company_name != ''">
+            AND company_name LIKE  '%'+#{company_name}+'%'
+        </if>
+		<if test = "company_abbr != null and company_abbr != ''">
+            AND company_abbr LIKE  '%'+#{company_abbr}+'%'
+        </if>
+	</select>
+	<insert id="insertCompany" parameterType="com.ksg.api.model.Company">
+		INSERT INTO TB_COMPANY (
+			company_name,
+			company_abbr,
+			agent_name,
+			agent_abbr,
+			contents,
+			event_date
+		
+		) VALUES (
+			#{company_name, mode=IN, jdbcType=VARCHAR},
+			#{company_abbr, mode=IN, jdbcType=VARCHAR},
+			#{agent_name, mode=IN, jdbcType=VARCHAR},
+			#{agent_abbr, mode=IN, jdbcType=VARCHAR},
+			#{contents, mode=IN, jdbcType=VARCHAR},
+			CONVERT(VARCHAR(8), GETDATE(), 112)
+		)
+	</insert>
+	<update id="updateCompany" parameterType="com.ksg.api.model.Company">
+		UPDATE TB_COMPANY 
+		SET 
+			agent_name		= #{agent_name, mode=IN, jdbcType=VARCHAR},
+			company_abbr	= #{company_abbr, mode=IN, jdbcType=VARCHAR},
+			agent_abbr		= #{agent_abbr, mode=IN, jdbcType=VARCHAR},
+			company_name	= #{company_name, mode=IN, jdbcType=VARCHAR},
+			contents		= #{contents, mode=IN, jdbcType=VARCHAR},
+			event_date		= CONVERT(VARCHAR(8), GETDATE(), 112)
+		WHERE
+			id	= #{id}
+	</update>
+		
+	<delete id="deleteCompany" parameterType="int">		
+		DELETE 
+		FROM TB_COMPANY 
+		WHERE 
+			id=#{id}	
+	</delete>
+		
+</mapper>

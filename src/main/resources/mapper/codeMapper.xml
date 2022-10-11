@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+    Copyright (c) 2010 IBM Corporation and others.
+    All rights reserved. This program and the accompanying materials
+    are made available under the terms of the Eclipse Public License v1.0
+    which accompanies this distribution, and is available at
+    http://www.eclipse.org/legal/epl-v10.html
+   
+    Contributors:
+        IBM Corporation - initial API and implementation
+ -->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="codeMapper">
+    <select id="selectAll" resultType="com.ksg.api.model.CodeClass">
+		SELECT
+            code_class_id,
+			code_class_name,
+			event_date
+		FROM TB_CODE_CLASS
+	</select>
+	<select id="selectDetailAll" resultType="com.ksg.api.model.Code">
+		SELECT
+            code_id,
+			code_class_id,
+			code_name,
+			code_field1,
+			code_field2,
+			code_field3,
+			event_date
+		FROM TB_CODE
+	</select>
+	<select id="selectByCondition" resultType="com.ksg.api.model.CodeClass">
+		SELECT
+            code_class_id,
+			code_class_name,
+			event_date
+		FROM TB_CODE_CLASS
+		WHERE 1=1
+		<if test = "code_class_name != null and code_class_name != ''">
+        AND code_class_name LIKE  '%'+#{code_class_name}+'%'
+        </if>
+	</select>
+	<select id="selectDetailByCondition" resultType="com.ksg.api.model.Code">
+		SELECT
+            code_id,
+			code_class_id,
+			code_name,
+			code_field1,
+			code_field2,
+			code_field3,
+			event_date
+		FROM TB_CODE
+		WHERE 1=1
+		<if test = "code_class_id != null and code_class_id != ''">
+            AND code_class_id =#{code_class_id}
+        </if>
+		<if test = "code_name != null and code_name != ''">
+        AND code_name LIKE  '%'+#{code_name}+'%'
+        </if>				
+	</select>
+    <select id="selectById" resultType="com.ksg.api.model.CodeClass">
+		SELECT
+            code_class_id,
+			code_class_name,
+			event_date
+		FROM TB_CODE_CLASS
+		WHERE 1=1
+		AND code_class_id =#{code_class_id}
+	</select>
+	<select id="selectDetailById" resultType="com.ksg.api.model.Code">
+		SELECT
+            code_id,
+			code_class_id,
+			code_name,
+			code_field1,
+			code_field2,
+			code_field3,
+			event_date
+		FROM TB_CODE
+		WHERE code_id =#{code_id}
+	</select>
+	
+	<select id="selectByKey" resultType="com.ksg.api.model.CodeClass">
+		SELECT
+			*
+		FROM TB_CODE_CLASS
+		WHERE code_class_name = #{code_class_name}
+		
+	</select>
+	<select id="selectDetailByKey" resultType="com.ksg.api.model.Code">
+		SELECT
+			*
+		FROM TB_CODE
+		WHERE 1=1
+		AND code_class_id = #{code_class_id}
+		AND code_name = #{code_name}
+	</select>
+	<insert id="insertCode" parameterType="com.ksg.api.model.CodeClass">
+		INSERT INTO TB_CODE_CLASS (
+			code_class_id,
+			code_class_name,
+			event_date
+		) VALUES (
+			#{code_class_id, mode=IN, jdbcType=VARCHAR},			
+			#{code_class_name, mode=IN, jdbcType=VARCHAR},			
+			CONVERT(VARCHAR(8), GETDATE(), 112)
+		)
+	</insert>		
+	<insert id="insertCodeDetail" parameterType="com.ksg.api.model.Code">
+		INSERT INTO TB_CODE (
+			code_class_id,
+			code_name,
+			code_field1,
+			code_field2,
+			code_field3,
+			event_date
+		) VALUES (
+			#{code_class_id, mode=IN, jdbcType=VARCHAR},
+			#{code_name, mode=IN, jdbcType=VARCHAR},			
+			#{code_field1, mode=IN, jdbcType=VARCHAR},			
+			#{code_field2, mode=IN, jdbcType=VARCHAR},			
+			#{code_field3, mode=IN, jdbcType=VARCHAR},						
+			CONVERT(VARCHAR(8), GETDATE(), 112)
+		)
+	</insert>
+
+	
+	<delete id="deleteCode" parameterType="String">		
+		DELETE 
+		FROM TB_CODE_CLASS 
+		WHERE 
+			code_class_id=#{code_class_id}	
+	</delete>	
+
+	<delete id="deleteCodeDetail" parameterType="int">		
+		DELETE 
+		FROM TB_CODE
+		WHERE 
+			code_id=#{code_id}	
+	</delete>
+	<update id="updateCodeDetail" parameterType="com.ksg.api.model.Company">
+		UPDATE TB_CODE 
+		SET 
+			code_name		= #{code_name, mode=IN, jdbcType=VARCHAR},
+			code_field1		= #{code_field1, mode=IN, jdbcType=VARCHAR},
+			code_field2		= #{code_field2, mode=IN, jdbcType=VARCHAR},
+			code_field3		= #{code_field3, mode=IN, jdbcType=VARCHAR},
+			event_date		= CONVERT(VARCHAR(8), GETDATE(), 112)
+		WHERE
+			code_id	= #{code_id}
+	</update>		
+</mapper>

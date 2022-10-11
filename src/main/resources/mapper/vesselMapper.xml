@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+    Copyright (c) 2010 IBM Corporation and others.
+    All rights reserved. This program and the accompanying materials
+    are made available under the terms of the Eclipse Public License v1.0
+    which accompanies this distribution, and is available at
+    http://www.eclipse.org/legal/epl-v10.html
+   
+    Contributors:
+        IBM Corporation - initial API and implementation
+ -->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="vesselMapper">
+    <select id="selectAll" resultType="com.ksg.api.model.Vessel">
+		SELECT
+            id,
+			vessel_name,
+			vessel_abbr,
+			vessel_type,
+			vessel_mmsi,
+			vessel_company,
+			vessel_use, 			
+			contents, 
+			event_date
+		FROM TB_VESSEL
+	</select>
+    <select id="selectById" resultType="com.ksg.api.model.Vessel">
+		SELECT
+            id,
+			vessel_name,
+			vessel_abbr,
+			vessel_type,
+			vessel_company,
+			vessel_mmsi,
+			vessel_use,
+			contents,
+			event_date 
+		FROM TB_VESSEL
+		WHERE 1=1
+		<if test = "id != null">
+            AND id =#{id}
+        </if>
+	</select>
+	<select id="selectByCondition" resultType="com.ksg.api.model.Vessel">
+		SELECT
+			id,
+			vessel_name,
+			vessel_abbr,
+			vessel_type,
+			vessel_mmsi,
+			vessel_company,
+			vessel_use,
+			contents,
+			event_date 
+		FROM TB_VESSEL
+		WHERE 1=1
+		<if test = "id > 0">
+            AND id =#{id}
+        </if>
+
+		<if test = "vessel_name != null and vessel_name != ''">
+            AND vessel_name LIKE  '%'+#{vessel_name}+'%'
+        </if>
+		<if test = "vessel_use != null and vessel_use != ''">
+            AND vessel_use = #{vessel_use}
+        </if>
+		<if test = "vessel_type != null and vessel_type != ''">
+            AND vessel_type = #{vessel_type}
+        </if>
+
+		<if test = "vessel_company != null and vessel_company != ''">
+            AND vessel_company = #{vessel_company}
+        </if>
+	</select>
+	<select id="selectByVesselNames" resultType="com.ksg.api.model.Vessel">
+		SELECT
+
+			vessel_name,
+			vessel_abbr,
+			vessel_type,
+			vessel_mmsi,
+			vessel_company,
+			vessel_use,
+			contents,
+			event_date 
+		FROM TB_VESSEL
+		WHERE 1=1
+		<foreach collection="list" item="vessel_name" open="AND vessel_name IN (" close=")" separator=",">
+		#{vessel_name, mode=IN, jdbcType=VARCHAR}
+		</foreach>
+		
+	</select>	
+	<insert id="insertVessel" parameterType="com.ksg.api.model.Vessel">
+		INSERT INTO TB_VESSEL (
+			vessel_name,
+			vessel_abbr,
+			vessel_type,
+			vessel_mmsi,
+			vessel_company,
+			vessel_use,
+			contents,
+			event_date 
+		
+		) VALUES (
+			#{vessel_name, mode=IN, jdbcType=VARCHAR},
+			#{vessel_abbr, mode=IN, jdbcType=VARCHAR},
+			#{vessel_type, mode=IN, jdbcType=VARCHAR},
+			#{vessel_mmsi, mode=IN, jdbcType=VARCHAR},
+			#{vessel_company, mode=IN, jdbcType=VARCHAR},			
+			#{vessel_use},
+			#{contents, mode=IN, jdbcType=VARCHAR},
+			CONVERT(VARCHAR(8), GETDATE(), 112)
+		)
+	</insert>
+	<update id="updateVessel" parameterType="com.ksg.api.model.Vessel">
+		UPDATE TB_VESSEL 
+		SET 
+			vessel_name			= #{vessel_name, mode=IN, jdbcType=VARCHAR},
+			vessel_abbr			= #{vessel_abbr, mode=IN, jdbcType=VARCHAR},
+			vessel_type			= #{vessel_type, mode=IN, jdbcType=VARCHAR},
+			vessel_company		= #{vessel_company, mode=IN, jdbcType=VARCHAR},
+			vessel_mmsi			= #{vessel_mmsi, mode=IN, jdbcType=VARCHAR},
+			vessel_use			= #{vessel_use},
+			contents			= #{contents, mode=IN, jdbcType=VARCHAR},
+			event_date			= CONVERT(VARCHAR(8), GETDATE(), 112)
+		WHERE
+			id	= #{id}
+	</update>
+		
+	<delete id="deleteVessel" parameterType="int">		
+		DELETE 
+		FROM TB_VESSEL 
+		WHERE 
+			id=#{id}	
+	</delete>		
+</mapper>

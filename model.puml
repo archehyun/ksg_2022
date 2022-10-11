@@ -1,0 +1,85 @@
+@startuml user
+
+skinparam monochrome reverse
+
+
+class "CodeClass" as codeClass {
+  - code_class_id : int NOT NULL  
+  * code_class_name : varchar(255)
+  * event_date : varchar(8)  
+}
+
+class "Code" as code {
+  - code_id : int NOT NULL
+  * code_class_id : varchar(255)
+  * code_name : varchar(255)
+  * code_field1 : varchar(255)
+  * code_field2 : varchar(255)
+  * code_field3 : varchar(255)
+  * event_date : varchar(8)
+}
+
+class "Member" as member {
+  - member_id : int NOT NULL
+  * member_name : varchar(255)
+  * member_password : varchar(255)  
+}
+
+class "Company" as company {
+  - company_id : int NOT NULL
+  * company_name : varchar(255)
+  * company_abbr : varchar(255)
+  * agent_name : varchar(255)
+  * agent_abbr : varchar(255)
+  * event_date : varchar(8)
+}
+
+class "Vessel" as vesel {
+  - vessel_id : int NOT NULL  
+  * vessel_name : varchar(255)
+  * vessel_use : char(1)
+  * vessel_mmsi : varchar(255)
+  * vessel_parent_id : varchar(255)
+  * event_date : varchar(8)
+}
+
+class "Port" as port {
+  - port_id : int NOT NULL  
+  * port_name : varchar(255)
+  * port_parent_id : varchar(255)
+  * port_area : varchar(255)
+  * port_nationality : varchar(255)
+  * event_date : varchar(8)
+}
+
+class "ShipperTable" as shipperTable {
+  - table_id : int NOT NULL
+  * data : Text
+  * table_type : varchar(255)
+  * title : varchar(255)
+  * inbound_index : varchar(255)
+  * outbound_index : varchar(255)
+  * company : varchar(255)
+  * agent : varchar(255)
+  * event_date : varchar(8)
+ 
+}
+
+class "Schedule" as schedule {
+  - schedule_id : int NOT NULL
+  * schedule_date : varchar(8)
+  * inout_type : varchar(8)
+  * schedule_type : varchar(8)
+  * from_port_code : varchar(255)
+  * to_port_code : varchar(255)
+  * from_date : varchar(8)
+  * to_date : varchar(8)
+  * vessel_code  : varchar(8)
+  * vessel_voyage  : varchar(8)
+  * area_code  : varchar(255)
+  * event_date : varchar(8)
+}
+
+
+codeClass -- code
+@enduml

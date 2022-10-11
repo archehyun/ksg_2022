@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+    Copyright (c) 2010 IBM Corporation and others.
+    All rights reserved. This program and the accompanying materials
+    are made available under the terms of the Eclipse Public License v1.0
+    which accompanies this distribution, and is available at
+    http://www.eclipse.org/legal/epl-v10.html
+   
+    Contributors:
+        IBM Corporation - initial API and implementation
+ -->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="portMapper">
+    <select id="selectAll" resultType="com.ksg.api.model.Port">
+		SELECT
+            id,
+			port_area,
+			port_name,
+			port_nationality,
+			area_code,
+			contents,
+			event_date 
+		FROM TB_PORT
+	</select>
+    <select id="selectById" resultType="com.ksg.api.model.Port">
+		SELECT
+            id,
+			port_area,
+			port_name,
+			port_nationality,
+			area_code,
+			contents,
+			event_date  
+		FROM TB_PORT
+		WHERE 1=1
+		<if test = "id != null">
+            AND id =#{id}
+        </if>
+	</select>
+	    <select id="selectByPortNames" resultType="com.ksg.api.model.Port">
+		SELECT
+            id,
+			port_area,
+			port_name,
+			port_nationality,
+			area_code,
+			contents,
+			event_date  
+		FROM TB_PORT
+		WHERE 1=1
+		<foreach collection="list" item="port_name" open="AND port_name IN (" close=")" separator=",">
+		#{port_name, mode=IN, jdbcType=VARCHAR}
+		</foreach>
+		
+	</select>
+	<select id="selectByKey" resultType="com.ksg.api.model.Port">
+		SELECT
+            id,
+			port_area,
+			port_name,
+			port_nationality,
+			area_code,
+			contents,
+			event_date  
+		FROM TB_PORT
+		WHERE 1=1
+        AND port_name =#{port_name}
+        
+	</select>
+	<select id="selectByCondition" resultType="com.ksg.api.model.Port">
+		SELECT
+            id,
+			port_area,
+			port_name,
+			port_nationality,
+			area_code,
+			contents,
+			event_date  
+		FROM TB_PORT
+		WHERE 1=1
+		<if test = "id > 0">
+            AND id =#{id}
+        </if>
+
+		<if test = "port_name != null and port_name != ''">
+            AND port_name LIKE  '%'+#{port_name}+'%'
+        </if>
+		
+		<if test = "area_code != null and area_code != ''">
+            AND area_code = #{area_code}
+        </if>
+	</select>
+	<insert id="insertPort" parameterType="com.ksg.api.model.Port">
+		INSERT INTO TB_PORT (
+			port_area,
+			port_name,
+			port_nationality,
+			area_code,
+			contents,
+			event_date 
+		
+		) VALUES (
+			#{port_area, mode=IN, jdbcType=VARCHAR},
+			#{port_name, mode=IN, jdbcType=VARCHAR},
+			#{port_nationality, mode=IN, jdbcType=VARCHAR},
+			#{area_code, mode=IN, jdbcType=VARCHAR},
+			#{contents, mode=IN, jdbcType=VARCHAR},
+			CONVERT(VARCHAR(8), GETDATE(), 112)
+		)
+	</insert>
+	<update id="updatePort" parameterType="com.ksg.api.model.Port">
+		UPDATE TB_PORT 
+		SET 
+			port_area			= #{port_area, mode=IN, jdbcType=VARCHAR},
+			port_name			= #{port_name, mode=IN, jdbcType=VARCHAR},
+			port_nationality	= #{port_nationality, mode=IN, jdbcType=VARCHAR},
+			area_code			= #{area_code, mode=IN, jdbcType=VARCHAR},
+			contents			= #{contents, mode=IN, jdbcType=VARCHAR},
+			event_date			= CONVERT(VARCHAR(8), GETDATE(), 112)
+		WHERE
+			id	= #{id}
+	</update>
+		
+	<delete id="deletePort" parameterType="int">		
+		DELETE 
+		FROM TB_PORT 
+		WHERE 
+			id=#{id}	
+	</delete>	
+</mapper>

@@ -1,0 +1,5 @@
+@startuml sample
+Alice -> Bob: test
+
+class Code
+@enduml

@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+    Copyright (c) 2010 IBM Corporation and others.
+    All rights reserved. This program and the accompanying materials
+    are made available under the terms of the Eclipse Public License v1.0
+    which accompanies this distribution, and is available at
+    http://www.eclipse.org/legal/epl-v10.html
+   
+    Contributors:
+        IBM Corporation - initial API and implementation
+ -->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="shipperTableMapper">
+    <select id="selectAll" resultType="com.ksg.api.model.ShipperTable">
+		SELECT
+			id,
+			table_id,
+			title,
+			data,
+			agent,
+			company,
+			inbound_from_index,
+			inbound_to_index,
+			outbound_from_index,
+			outbound_to_index,
+    		page,
+			event_date
+		FROM TB_SHIPPERTABLE
+	</select>
+    <select id="selectById" resultType="com.ksg.api.model.ShipperTable">
+		SELECT
+			id,
+			table_id,
+			title,
+			data,
+			agent,
+			company,
+			inbound_from_index,
+			inbound_to_index,
+			outbound_from_index,
+			outbound_to_index,
+    		page,
+			event_date
+		FROM TB_SHIPPERTABLE
+		WHERE 1=1
+		<if test = "id != null">
+            AND id =#{id}
+        </if>
+	</select>
+	<select id="selectByKey" resultType="com.ksg.api.model.ShipperTable">
+		SELECT
+			id,
+			table_id,
+			title,
+			data,
+			agent,
+			company,
+			inbound_from_index,
+			inbound_to_index,
+			outbound_from_index,
+			outbound_to_index,
+			page,
+			event_date
+		FROM TB_SHIPPERTABLE
+		WHERE 1=1
+        AND table_id =#{table_id}
+        
+	</select>
+	<select id="selectByCondition" resultType="com.ksg.api.model.ShipperTable">
+		SELECT
+			id,
+			table_id,
+			title,
+			table_type,
+			data,
+			agent,
+			company,
+			inbound_from_index,
+			inbound_to_index,
+			outbound_from_index,
+			outbound_to_index,
+			page,
+			event_date 
+		FROM TB_SHIPPERTABLE
+		WHERE 1=1
+		<if test = "id > 0">
+            AND id =#{id}
+        </if>
+		<if test = "table_type != null and table_type != ''">
+            AND table_type = #{table_id}
+        </if>
+
+		<if test = "table_id != null and table_id != ''">
+            AND table_id LIKE  '%'+#{table_id}+'%'
+        </if>
+	</select>
+	<insert id="insertShipperTable" parameterType="com.ksg.api.model.ShipperTable">
+		INSERT INTO TB_SHIPPERTABLE (
+
+			table_id,
+			title,
+			data,
+			agent,
+			company,
+			inbound_from_index,
+			inbound_to_index,
+			outbound_from_index,
+			outbound_to_index,
+			page,
+			table_type,
+			event_date 
+		
+		) VALUES (
+			#{table_id, mode=IN, jdbcType=VARCHAR},
+			#{title, mode=IN, jdbcType=VARCHAR},
+			#{data, mode=IN, jdbcType=VARCHAR},
+			#{agent, mode=IN, jdbcType=VARCHAR},
+			#{company, mode=IN, jdbcType=VARCHAR},
+			#{inbound_from_index, mode=IN, jdbcType=VARCHAR},
+			#{inbound_to_index, mode=IN, jdbcType=VARCHAR},
+			#{outbound_from_index, mode=IN, jdbcType=VARCHAR},
+			#{outbound_to_index, mode=IN, jdbcType=VARCHAR},
+			#{page},
+			#{table_type, mode=IN, jdbcType=VARCHAR},
+			CONVERT(VARCHAR(8), GETDATE(), 112)
+		)
+	</insert>
+	<update id="updateShipperTable" parameterType="com.ksg.api.model.ShipperTable">
+		UPDATE TB_SHIPPERTABLE 
+		SET 
+			table_id				= #{table_id, mode=IN, jdbcType=VARCHAR},
+			title					= #{title, mode=IN, jdbcType=VARCHAR},			
+			page					= #{page},
+			agent					= #{agent, mode=IN, jdbcType=VARCHAR},
+			table_type				= #{table_type, mode=IN, jdbcType=VARCHAR},
+			company					= #{company, mode=IN, jdbcType=VARCHAR},
+			inbound_from_index		= #{inbound_from_index, mode=IN, jdbcType=VARCHAR},
+			inbound_to_index		= #{inbound_to_index, mode=IN, jdbcType=VARCHAR},
+			outbound_from_index		= #{outbound_from_index, mode=IN, jdbcType=VARCHAR},
+			outbound_to_index		= #{outbound_to_index, mode=IN, jdbcType=VARCHAR},
+			event_date				= CONVERT(VARCHAR(8), GETDATE(), 112)
+		WHERE
+			id	= #{id}
+	</update>
+	<update id="updateShipperTableData" parameterType="com.ksg.api.model.ShipperTable">
+		UPDATE TB_SHIPPERTABLE 
+		SET 
+			
+			data				= #{data, mode=IN, jdbcType=VARCHAR},
+			
+			event_date			= CONVERT(VARCHAR(8), GETDATE(), 112)
+		WHERE
+			id	= #{id}
+	</update>	
+		
+	<delete id="deleteShipperTable" parameterType="int">		
+		DELETE 
+		FROM TB_SHIPPERTABLE  
+		WHERE 
+			id=#{id}	
+	</delete>	
+</mapper>

@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+    Copyright (c) 2010 IBM Corporation and others.
+    All rights reserved. This program and the accompanying materials
+    are made available under the terms of the Eclipse Public License v1.0
+    which accompanies this distribution, and is available at
+    http://www.eclipse.org/legal/epl-v10.html
+   
+    Contributors:
+        IBM Corporation - initial API and implementation
+ -->
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="scheduleMapper">
+    <select id="selectAll" resultType="com.ksg.api.model.Schedule">
+		SELECT
+			id,
+			table_id,
+			company_name,
+			vessel_name,
+			vessel_voayge,
+			vessel_type,
+			schedule_type,
+			inout_type,
+			event_date,
+			area_code,
+			area_name,
+			from_port,
+			to_port,
+			from_date,
+			to_date
+		FROM TB_SCHEDULE
+	</select>
+    <select id="selectById" resultType="com.ksg.api.model.Schedule">
+		SELECT
+			id,
+			table_id,
+			title,
+			data,
+			agent,
+			company,
+			inbound_index,
+			outbound_index,
+    		page,
+			event_date
+		FROM TB_SCHEDULE
+		WHERE 1=1
+		<if test = "id != null">
+            AND id =#{id}
+        </if>
+	</select>
+ 	<select id="selectListByKey" resultType="com.ksg.api.model.Schedule">
+		SELECT
+            id,
+			table_id,
+			company_name,
+			vessel_name,
+			vessel_voyage,
+			schedule_type,
+			inout_type,
+			event_date,
+			area_code,
+			area_name,
+			from_port,
+			to_port,
+			from_date,
+			to_date
+		FROM TB_SCHEDULE
+		WHERE 1=1
+		<if test = "table_id != null">
+            AND table_id =#{table_id}
+        </if>
+	</select>	
+	<select id="selectByCondition" resultType="com.ksg.api.model.Schedule">
+		SELECT
+            id,
+			table_id,
+			company_name,
+			vessel_name,
+			vessel_voayge,
+			schedule_type,
+			inout_type,
+			event_date,
+			area_code,
+			area_name,
+			from_port,
+			to_port,
+			from_date,
+			to_date
+		FROM TB_SCHEDULE
+		WHERE 1=1
+		<if test = "id > 0">
+            AND id =#{id}
+        </if>
+
+		<if test = "company_name != null and company_name != ''">
+            AND company_name LIKE  '%'+#{company_name}+'%'
+        </if>
+		<if test = "inout_type != null and inout_type != ''">
+            AND inout_type = #{inout_type}
+        </if>
+		<if test = "from_port != null and from_port != ''">
+            AND from_port = #{from_port}
+        </if>
+		<if test = "to_port != null and to_port != ''">
+            AND to_port = #{to_port}
+        </if>		
+	</select>
+	<insert id="insertScheduleBulk" parameterType="java.util.List">
+		INSERT INTO TB_SCHEDULE ( 
+			table_id,
+			vessel_name,			
+			vessel_voyage,
+			inout_type,
+			event_date,			
+			from_port,			
+			from_date,
+			to_port,
+			to_date
+		) VALUES 
+		<foreach collection="list" item="schedule" separator=" , "> 
+		( #{schedule.table_id}
+		, #{schedule.vessel_name}
+		, #{schedule.vessel_voyage}
+		, #{schedule.inout_type}
+		, #{schedule.event_date}
+		, #{schedule.from_port}
+		, #{schedule.from_date}
+		, #{schedule.to_port}
+		, #{schedule.to_date}) 
+		</foreach> 
+	</insert>
+	<delete id="deleteScheduleByKey" parameterType="string">		
+		DELETE 
+		FROM TB_SCHEDULE 
+		WHERE 
+			table_id=#{table_id}	
+	</delete>
+</mapper>
