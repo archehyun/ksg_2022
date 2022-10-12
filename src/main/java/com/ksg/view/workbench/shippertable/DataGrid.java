@@ -13,6 +13,9 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
+
+import org.json.simple.parser.ParseException;
+
 import java.awt.event.ComponentEvent;
 import com.ksg.api.controll.ScheduleController;
 import com.ksg.api.model.CommandMap;
@@ -32,6 +35,10 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+/**
+ * 광고정보관리 화면
+ * 광고정보 입력
+ */
 public class DataGrid extends KSGPanel
 {
     private int id;
@@ -52,9 +59,9 @@ public class DataGrid extends KSGPanel
 
     public JButton butPort = new KSGButton("항구관리");
 
-    ShipperTableData tabledata = new ShipperTableData();
+    private ShipperTableData tabledata = new ShipperTableData();
 
-    KSGPanel pnDataControl = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));    
+    private KSGPanel pnDataControl = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));    
 
     public CommandMap param;
 
@@ -66,11 +73,15 @@ public class DataGrid extends KSGPanel
 
     public DataGrid()
     {  
+        initComponents(); 
+    }
+
+    private void initComponents()
+    {
         butShipper.addActionListener(new ActionListener(){
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                
 
                 ShipperTableUpdatePopup  updatePopup = new ShipperTableUpdatePopup (param);
 
@@ -89,7 +100,12 @@ public class DataGrid extends KSGPanel
                     if(updatePopup.STATUS == CommonPopup.OK)
                     {
                         ShipperTableData data =(ShipperTableData) updatePopup.result;
-                        loadData(data.toString());
+                        try {
+                            loadData(data.toString());
+                        } catch (ParseException e1) {
+                            // TODO Auto-generated catch block
+                            e1.printStackTrace();
+                        }
                     }
                     
                 }});    
@@ -145,11 +161,12 @@ public class DataGrid extends KSGPanel
     }
     public void setParam(CommandMap param)
     {
-        this.param = param;
-        this.id = (int) param.get("id");
-        this.table_id =(String) param.get("table_id");
+        this.param      = param;
+        this.id         = (int) param.get("id");
+        this.table_id   =(String) param.get("table_id");
+
         this.lblInbound.setText((String)param.get("inbound_index"));
-        this.lblOutbound.setText((String)param.get("outbound_index"));
+        this.lblOutbound.setText((String)param.get("xoutbound_index"));
         this.schedulePn.setTable_id(table_id);
     }
 
@@ -158,18 +175,24 @@ public class DataGrid extends KSGPanel
         return this.param;
     }
 
-    public void loadData(ShipperTableData data)
+    public void loadData(ShipperTableData data) throws ParseException
     {
         loadData(data.toString());
     }
-    public void loadData(String data)
+    /**
+     * 광고정보 로드
+     * @param data
+     * @throws ParseException
+     */
+    public void loadData(String data) throws ParseException
     {
-        try {
+        
             tabledata.parse(data);
 
             TableBuilder builder = new TableBuilder(tabledata);
 
             String[] header = builder.getHeader();
+            
             String dataArray[][]={{"1"},{"2"}};
 
             dataArray = builder.getDataArray();
@@ -189,10 +212,7 @@ public class DataGrid extends KSGPanel
             
             txfData.setText(data);
 
-        } catch (org.json.simple.parser.ParseException e) {
-            
-            e.printStackTrace();
-        }
+       
         
     }
     

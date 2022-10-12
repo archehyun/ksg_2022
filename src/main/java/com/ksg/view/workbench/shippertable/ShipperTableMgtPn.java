@@ -10,8 +10,7 @@ import javax.swing.JTable;
 
 import javax.swing.JTextField;
 
-
-
+import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Component;
 import java.awt.event.ComponentEvent;
 
@@ -157,9 +156,16 @@ public class ShipperTableMgtPn extends MgtPn {
                     
                     pnData.setParam((CommandMap) grid.getTable().getValueAt(row));
                     
-                    pnData.loadData(strData);                    
+                    try {
+                        pnData.loadData(strData);
+                        cardLayout.show(pnCardMain, "data");
+                    } catch (ParseException e1) {
+                        
+                        e1.printStackTrace();
+                        JOptionPane.showMessageDialog(ShipperTableMgtPn.this,e1.getMessage());
+                    }                    
 
-                    cardLayout.show(pnCardMain, "data");
+                    
                 }
                 
             }

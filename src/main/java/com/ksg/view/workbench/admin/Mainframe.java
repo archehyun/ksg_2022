@@ -182,10 +182,9 @@ public class Mainframe extends JFrame implements ActionListener{
 		menu.setMenus(list);
 		pnTabMain.setMenu(list);		
     }
-	
+
     private JComponent createMain()
     {
-
 		KSGPanel pnCenter = new KSGPanel();
 
 		pnCenter.add(header,BorderLayout.NORTH);
