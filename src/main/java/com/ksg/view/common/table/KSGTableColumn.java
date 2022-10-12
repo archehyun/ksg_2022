@@ -2,6 +2,9 @@ package com.ksg.view.common.table;
 
 import javax.swing.table.TableColumn;
 
+/**
+ * 테이블 컬럼
+ */
 public class KSGTableColumn extends TableColumn{
 	
 	

@@ -37,17 +37,6 @@ import java.util.List;
 
 @Component("CompanyMgtPn")
 public class CompanyMgtPn extends MgtPn{
-
-
-    private static final String STRING_VESSEL_TYPE 		= "선박타입";
-	private static final String STRING_INPUTDATE 		= "등록일";
-	private static final String STRING_VESSEL_COMPANY 	= "대표선사";
-	private static final String STRING_VESSEL_MMSI 		= "MMSI";
-	private static final String STRING_COMPANY_NAME 		= "선사명";
-	private static final String STRING_VESSEL_ABBR 		= "선박명약어";
-	private static final String STRING_CONTAINER_TYPE 	= "컨테이너 타입";
-
-    
     
     private KSGDataGrid grid;
     private JTextField txfCompanyName = new JTextField(10);
@@ -58,10 +47,6 @@ public class CompanyMgtPn extends MgtPn{
     private JButton butSearch = new KSGButton("검색");
     private JTextField txfCompanyAbbr = new JTextField(10);
     private KSGLabel lblCompanyName;
-
-    
-    
-    
     
     public CompanyMgtPn()
     {
@@ -71,11 +56,13 @@ public class CompanyMgtPn extends MgtPn{
     public CompanyMgtPn(String name)
     {
         super(name);
+
         this.addComponentListener(this);
 
         setController(new CompanyController());        
 
         this.add(buildCenter());
+
         this.add(buildSearch(),BorderLayout.NORTH);
         
     }
@@ -233,8 +220,10 @@ public class CompanyMgtPn extends MgtPn{
         }
         else if("export".equals(command))
         {
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");    
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+
             String date=format.format(Calendar.getInstance().getTime());
+            
             CommandMap param = new CommandMap();
 
             param.put("filePath", "d:/company_"+date+".xlsx");

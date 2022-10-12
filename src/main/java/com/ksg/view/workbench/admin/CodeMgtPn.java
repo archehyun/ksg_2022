@@ -34,6 +34,10 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import java.awt.event.ComponentEvent;
 import java.awt.Point;
+
+/**
+ * 코드 정보관리 화면
+ */
 @Component("CodeMgtPn")
 public class CodeMgtPn extends MgtPn{
 
@@ -98,7 +102,7 @@ public class CodeMgtPn extends MgtPn{
 
         KSGPanel pnCodeHeaderMain = new KSGPanel();
         KSGPanel pnCodeHeaderInfo = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
-        pnCodeHeaderMain.setPreferredSize(new Dimension(300,0));
+        pnCodeHeaderMain.setPreferredSize(new Dimension(400,0));
 
 
         butInsert.setActionCommand("insert");
@@ -157,8 +161,7 @@ public class CodeMgtPn extends MgtPn{
     {
         String code_class_name =txfInput.getText();
 
-        CommandMap param = new CommandMap();            
-
+        CommandMap param = new CommandMap();
         
         param.put("code_class_name", code_class_name);
 
@@ -201,8 +204,6 @@ public class CodeMgtPn extends MgtPn{
 
                     gridDetail.loadData(master);
                     gridDetail.getTable().changeSelection(0,0,false,false);
-
-                    
                 }    
             }
             else if("deleteCode".equals(result.getService_id()))
@@ -264,6 +265,7 @@ public class CodeMgtPn extends MgtPn{
         else if("insertDetail".equals(command))
         {
             int row =gridHeader.getTable().getSelectedRow();
+            
             if(row<0)return;
             String code_class_id=(String) gridHeader.getTable().getValueAt(row,"code_class_id");
 

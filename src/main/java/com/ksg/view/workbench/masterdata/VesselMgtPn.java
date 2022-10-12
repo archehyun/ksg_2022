@@ -283,15 +283,15 @@ public class VesselMgtPn extends MgtPn{
         }
         else if("export".equals(command))
         {
-            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");    
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+
             String date=format.format(Calendar.getInstance().getTime());
+
             CommandMap param = new CommandMap();
 
             param.put("filePath", "d:/vessel_"+date+".xlsx");
             
             callApi("exportVessel", param);
-        
-            
 
         }
         

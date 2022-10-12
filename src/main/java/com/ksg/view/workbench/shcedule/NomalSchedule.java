@@ -73,8 +73,11 @@ public class NomalSchedule extends MgtPn{
         super(name);
 
         this.setController(new ScheduleController());
+
         this.addComponentListener(this);
+
         this.add(buildMain());
+
         this.add(buildSearch(),BorderLayout.NORTH);
 
     }
@@ -133,7 +136,6 @@ public class NomalSchedule extends MgtPn{
                     txfFromPort.setText((String)companySearchPopup.result);
                 }
 
-                
             }});
 
 
@@ -220,7 +222,6 @@ public class NomalSchedule extends MgtPn{
 
 
     private void create() {
-        //String port_name =txfInput.getText();
 
         CommandMap param = new CommandMap();
 
@@ -236,8 +237,7 @@ public class NomalSchedule extends MgtPn{
 
         callApi("createSchedule",param);
     }
-    private void fnSearch() {
-        //String port_name =txfInput.getText();
+    private void fnSearch() {        
 
         CommandMap param = new CommandMap();
 

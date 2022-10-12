@@ -38,7 +38,7 @@ public class ExcelUtil {
         workbook.close();
         fos.close();
     }
-    int rowNum;
+    int rowNum=0;
     //엑셀 생성
     private void createExcel(Sheet sheet, List<CommandMap> datas, String colums[]) {
     
@@ -47,8 +47,13 @@ public class ExcelUtil {
         
         // Cell cell = null;
         CellStyle cs = workbook.createCellStyle();
-
-        
+        Row headRow = sheet.createRow(rowNum++);
+        int headcellNum = 0;
+        for(String name:colums)
+        {
+            Cell cell =headRow.createCell(headcellNum++);
+            cell.setCellValue(name);
+        }
         
         // setHeaderCS(cs, font, cell);
         for (CommandMap data : datas) {
