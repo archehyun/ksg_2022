@@ -122,6 +122,7 @@ public class DataGrid extends KSGPanel
         pnTab.add("table", buildGridTable());
 
         pnTab.add("text", new JScrollPane(txfData));
+
         pnTab.add("schedule", buildSchedule());
 
         add(pnTab);
@@ -148,8 +149,8 @@ public class DataGrid extends KSGPanel
 
         KSGPanel pnMain = new KSGPanel();
 
-
         pnMain.add(pnInfo,BorderLayout.NORTH);
+
         pnMain.add(new JScrollPane(table));
 
         return pnMain;
@@ -174,48 +175,48 @@ public class DataGrid extends KSGPanel
     {
         return this.param;
     }
-
+    /**
+     * 
+     * @param data 광고데이터
+     * @throws ParseException
+     */
     public void loadData(ShipperTableData data) throws ParseException
     {
         loadData(data.toString());
     }
     /**
      * 광고정보 로드
-     * @param data
+     * @param data 광고데이터
      * @throws ParseException
      */
     public void loadData(String data) throws ParseException
-    {
+    {   
+        tabledata.parse(data);
+
+        TableBuilder builder = new TableBuilder(tabledata);
+
+        String[] header = builder.getHeader();
         
-            tabledata.parse(data);
 
-            TableBuilder builder = new TableBuilder(tabledata);
+        //TODO 삭제
+        String dataArray[][]={{"1"},{"2"}};
 
-            String[] header = builder.getHeader();
-            
-            String dataArray[][]={{"1"},{"2"}};
+        dataArray = builder.getDataArray();
 
-            dataArray = builder.getDataArray();
+        DefaultTableModel mode = new DefaultTableModel(dataArray, header);
 
-            DefaultTableModel mode = new DefaultTableModel(dataArray, header);
+        table.setModel(mode);
 
+        TableColumnModel columnModel=  table.getColumnModel();
 
-            table.setModel(mode);
-
-            TableColumnModel columnModel=  table.getColumnModel();
-
-            for(int i=0;i<columnModel.getColumnCount();i++)
-            {
-                columnModel.getColumn(i).setCellEditor(new MyCellEditor());
-                columnModel.getColumn(i).setCellRenderer(new MyCellEditor());
-            }
-            
-            txfData.setText(data);
-
-       
+        for(int i=0;i<columnModel.getColumnCount();i++)
+        {
+            columnModel.getColumn(i).setCellEditor(new MyCellEditor());
+            columnModel.getColumn(i).setCellRenderer(new MyCellEditor());
+        }
         
+        txfData.setText(data);
     }
-    
 }
 
 

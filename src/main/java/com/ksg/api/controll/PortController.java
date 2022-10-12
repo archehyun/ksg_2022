@@ -20,7 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 public class PortController extends AbstractController{
 
     
-
+    /* 항구정보관리 서비스 */
     private PortService service;    
     
     public PortController()

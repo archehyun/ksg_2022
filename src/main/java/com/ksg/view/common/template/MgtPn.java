@@ -8,8 +8,11 @@ import com.ksg.api.model.CommandMap;
 import com.ksg.api.service.CodeService;
 import com.ksg.view.common.panel.KSGPanel;
 
-
+/*
+ * 
+ */
 public abstract class MgtPn extends KSGPanel implements View,  ActionListener, ComponentListener{
+    
     protected CommandMap model;
 
     private AbstractController controller;
