@@ -80,6 +80,19 @@ class "Schedule" as schedule {
   * event_date : varchar(8)
 }
 
+class TableBuilder
+{
+  +getHeader()
+  +getData()
+  +String[]:getPorts()
+}
+
+class ShipperTableData
+{
+  +updateDate(int row, int col, Object value)
+  +parse(String data)
+}
+
 
 codeClass -- code
 @enduml

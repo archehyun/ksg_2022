@@ -9,7 +9,7 @@ import com.ksg.api.annotation.ControlMethod;
 import com.ksg.api.model.CommandMap;
 import com.ksg.api.model.Schedule;
 import com.ksg.api.service.ScheduleService;
-import com.ksg.view.common.template.View;
+
 
 import lombok.extern.slf4j.Slf4j;
 

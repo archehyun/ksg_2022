@@ -23,7 +23,10 @@ import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 
 
 import com.ksg.api.model.CommandMap;
-
+/**
+ * @author ch.park
+ * @date 2022-10-12
+ */
 public class ExcelUtil {
 
     Workbook workbook;

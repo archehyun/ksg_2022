@@ -89,11 +89,15 @@
             AND id =#{id}
         </if>
 		<if test = "table_type != null and table_type != ''">
-            AND table_type = #{table_id}
+            AND table_type = #{table_type}
         </if>
 
 		<if test = "table_id != null and table_id != ''">
             AND table_id LIKE  '%'+#{table_id}+'%'
+        </if>
+
+		<if test = "company != null and company != ''">
+            AND company LIKE  '%'+#{company}+'%'
         </if>
 	</select>
 	<insert id="insertShipperTable" parameterType="com.ksg.api.model.ShipperTable">

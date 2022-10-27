@@ -41,7 +41,7 @@ public class WhiteTableUI extends AbstractTableUI{
 			}
 			setText((value == null) ? "" : value.toString());
 
-			setBorder(BorderFactory.createMatteBorder(2, 0, 1, 0, Color.lightGray));
+			setBorder(BorderFactory.createMatteBorder(0, 1, 0, 1, Color.lightGray));
 
 			setHorizontalAlignment(JLabel.CENTER);
 

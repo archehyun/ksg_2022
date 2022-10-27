@@ -87,28 +87,28 @@ public class VesselMgtPn extends MgtPn{
         this.setController(new VesselController());
         
         this.addComponentListener(this);
-        // cbxUseYn.loadData(codeService.selectEnumById("vessel_use"));
-        // this.setBorder(BorderFactory.createEmptyBorder(0, 0, 15, 0));
-        
+
         this.add(buildCenter());
+
         this.add(buildSearch(),BorderLayout.NORTH);
-        
     }
     private KSGPanel buildCenter()
     {
         int level[]={50,100};
 
         grid = new KSGDataGrid(level);
-        grid.getTable().addColumn(new KSGTableColumn("rowNum","순번",50));
-        grid.getTable().addColumn(new KSGTableColumn("vessel_name",STRING_VESSEL_NAME));
-		grid.getTable().addColumn(new KSGTableColumn("vessel_abbr",STRING_VESSEL_ABBR));
-        grid.getTable().addColumn(new KSGTableColumn("vessel_type","선박타입"));
+        grid.getTable().addColumn(new KSGTableColumn("rowNum","순번",70,70, JLabel.RIGHT));
+        grid.getTable().addColumn(new KSGTableColumn("vessel_name",STRING_VESSEL_NAME, 200));
+		grid.getTable().addColumn(new KSGTableColumn("vessel_abbr",STRING_VESSEL_ABBR, 200));
+        grid.getTable().addColumn(new KSGTableColumn("vessel_type","선박타입",80, 80, JLabel.CENTER));
 		grid.getTable().addColumn(new KSGTableColumn("vessel_mmsi",STRING_VESSEL_MMSI));
-        grid.getTable().addColumn(new KSGTableColumn("vessel_use","사용유무",50));
-		grid.getTable().addColumn(new KSGTableColumn("vessel_company",STRING_VESSEL_COMPANY));		
+        grid.getTable().addColumn(new KSGTableColumn("vessel_use","사용유무",80, 80, JLabel.CENTER));
+		grid.getTable().addColumn(new KSGTableColumn("vessel_company",STRING_VESSEL_COMPANY, 200));		
         grid.getTable().addColumn(new KSGTableColumn("contents","비고"));		
-		grid.getTable().addColumn(new KSGTableColumn("event_date",STRING_INPUTDATE,400));       
+		grid.getTable().addColumn(new KSGTableColumn("event_date",STRING_INPUTDATE,120, 120, JLabel.CENTER));                      
         grid.getTable().addMouseListener(new TableSelectListner());
+        
+        
         grid.getTable().initComp();
 
         KSGPanel pnInfo = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));

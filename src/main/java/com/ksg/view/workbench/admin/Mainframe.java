@@ -88,7 +88,6 @@ public class Mainframe extends JFrame implements ActionListener{
 			@Override
 			public void selected(int index) {
 				System.out.println("index:"+index);
-				
 			}
 
 			@Override
@@ -143,8 +142,7 @@ public class Mainframe extends JFrame implements ActionListener{
 		animator.setResolution(0);
 		animator.setAcceleration(0.5f);
 		animator.setDeceleration(0.5f);
-
-
+		
 		initMenu();
 
 		header.initMoving(this);

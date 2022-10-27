@@ -1,7 +1,10 @@
 package com.ksg.api.controll;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.StringTokenizer;
 import java.util.stream.Collectors;
@@ -37,11 +40,13 @@ public class ShipperTableController extends AbstractController{
     {
         log.info("param:{}", param);
 
-        // String table_id =(String) param.get("table_id");
+        String table_id =(String) param.get("table_id");
+        String company =(String) param.get("company");
         String table_type = (String) param.get("table_type");
 
         ShipperTable shipperTable = ShipperTable.builder()
-                                                // .table_id(table_id)
+                                                .table_id(table_id)
+                                                .company(company)
                                                 .table_type(table_type)
                                                 .build();
 
@@ -142,8 +147,20 @@ public class ShipperTableController extends AbstractController{
         return returnMap;
         
     }
+    SimpleDateFormat formatYYYYMMDD = new SimpleDateFormat("YYYYmmdd");
 
+    SimpleDateFormat formatMMDD = new SimpleDateFormat("mm/dd");
 
+    private String getDateYYYYMMDD(String dateYYMM) throws ParseException
+    {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(new Date());
+        int year = cal.get(Calendar.YEAR);
+        cal.setTime(formatMMDD.parse(dateYYMM));        
+        cal.set(Calendar.YEAR, year);
+
+        return formatYYYYMMDD.format(cal.getTime());
+    }
     private void makeSchedule(CommandMap param) throws Exception
     {
         log.info("make Schhedule start");
@@ -157,7 +174,11 @@ public class ShipperTableController extends AbstractController{
         
         ShipperTableData data   = new ShipperTableData();
        
-        data.parse((String) param.get("data"));
+        
+        String strData = (String) param.get("data");
+        if(strData==null)return;
+
+        data.parse(strData);
        
         ArrayList<Integer> inFromIndex  = exportArray(inbound_from_index, "#");
         ArrayList<Integer> inToIndex    = exportArray(inbound_to_index, "#");
@@ -165,31 +186,31 @@ public class ShipperTableController extends AbstractController{
         ArrayList<Integer> outToIndex   = exportArray(outbound_to_index, "#");
         
 
-        TableBuilder builder = new TableBuilder(data);
+        TableBuilder builder    = new TableBuilder(data);
 
-        String dateArray[][]= builder.getDateArray();
+        String dateArray[][]    = builder.getDateArray();
 
-        String vesselArray[][] = builder.getVessel();
+        String vesselArray[][]  = builder.getVessel();
 
-        String portArray[] = builder.getPorts();
+        String portArray[]      = builder.getPorts();
 
         ArrayList<Schedule> scheduleList = new ArrayList<>();
 
         for(int i =0;i<dateArray.length;i++)
         {            
             String vessel_name =vesselArray[i][0]; 
-            String vessel_voyage =vesselArray[i][1];
 
+            String vessel_voyage =vesselArray[i][1];
             
             for(Integer fromIndex:inFromIndex)
             {
                 for(Integer toIndex:inToIndex)
                 {
                     try{
-                        String fromDate=dateArray[i][fromIndex-1];
-                        String toDate=dateArray[i][toIndex-1];
-                        String fromPort = portArray[fromIndex];
-                        String toPort = portArray[toIndex];
+                        String fromDate =   getDateYYYYMMDD(dateArray[i][fromIndex-1]);
+                        String toDate   =   getDateYYYYMMDD(dateArray[i][toIndex-1]);
+                        String fromPort =   portArray[fromIndex];
+                        String toPort   =   portArray[toIndex];
                         
                         var schedule= Schedule.builder().table_id(table_id)
                                             .vessel_name(vessel_name)
@@ -202,7 +223,7 @@ public class ShipperTableController extends AbstractController{
                                             .build();
                         scheduleList.add(schedule);
                     }
-                    catch(ArrayIndexOutOfBoundsException e)
+                    catch(Exception e)
                     {
                         System.err.println(e.getMessage());
                     }
@@ -215,10 +236,10 @@ public class ShipperTableController extends AbstractController{
                 for(Integer toIndex:outToIndex)
                 {
                     try{
-                        String fromDate = dateArray[i][fromIndex-1];
-                        String toDate   = dateArray[i][toIndex-1];
-                        String fromPort = portArray[fromIndex];
-                        String toPort   = portArray[toIndex];
+                        String fromDate =   getDateYYYYMMDD(dateArray[i][fromIndex-1]);
+                        String toDate   =   getDateYYYYMMDD(dateArray[i][toIndex-1]);
+                        String fromPort =   portArray[fromIndex];
+                        String toPort   =   portArray[toIndex];
                         
                         var schedule= Schedule.builder().table_id(table_id)
                                             .inout_type("O")
@@ -237,16 +258,17 @@ public class ShipperTableController extends AbstractController{
                 }
             }
         }
-
-        scheduleService.insertScheduleBulk(table_id,scheduleList);
+        if(!scheduleList.isEmpty())scheduleService.insertScheduleBulk(table_id,scheduleList);
 
         log.info("make Schhedule end");
     }
 
     private ArrayList exportArray(String data, String delim)
     {
-        StringTokenizer inFromtoken = new StringTokenizer(data, delim);
         ArrayList result = new ArrayList<>();
+        if(data== null) return result;
+        StringTokenizer inFromtoken = new StringTokenizer(data, delim);
+        
         while(inFromtoken.hasMoreTokens())
         {
             result.add(Integer.parseInt(inFromtoken.nextToken()));

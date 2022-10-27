@@ -15,6 +15,7 @@ import com.ksg.view.common.template.MgtPn;
 import java.awt.event.ComponentEvent;
 import org.springframework.stereotype.Component;
 
+//
 @Component("DataGridSchedulePn")
 public class SchedulePn extends MgtPn{
 
@@ -98,20 +99,15 @@ public class SchedulePn extends MgtPn{
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
-        // TODO Auto-generated method stub
-        
-    }
+    public void actionPerformed(ActionEvent e) {}
     @Override
     public void componentShown(ComponentEvent e) {
         fnSearch();
 
     }
-
+    
+    //TODO 아이디 할당 방식 개선
     public void setTable_id(String table_id2) {
         this.table_id =table_id2;
     }
-
-    
-    
 }

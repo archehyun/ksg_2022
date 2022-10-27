@@ -10,7 +10,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 import com.ksg.api.controll.CodeController;
-import com.ksg.api.controll.PortController;
+
 import com.ksg.api.model.CommandMap;
 import com.ksg.view.common.form.KSGForm;
 import com.ksg.view.common.panel.KSGPanel;

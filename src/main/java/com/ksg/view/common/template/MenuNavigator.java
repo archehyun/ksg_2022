@@ -47,8 +47,6 @@ public class MenuNavigator extends JPanel{
 
         setOpaque(false);
 
-        
-        
     }
 
     public void setMenus(List<Menu> menus)

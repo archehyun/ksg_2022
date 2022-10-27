@@ -70,6 +70,12 @@ public class KSGDataGrid extends KSGPanel implements ActionListener{
 
         JScrollPane comp = new JScrollPane( table);
 
+        table.getParent().getParent()
+        .setBackground(Color.white);
+
+        table.getTableHeader().setBackground(Color.white);
+        table.getTableHeader().setBorder(BorderFactory.createLineBorder(Color.lightGray, 1));
+
         comp.setVerticalScrollBar(new ScrollBarCustom());
 
         JPanel pn = new JPanel();

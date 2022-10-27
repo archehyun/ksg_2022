@@ -8,16 +8,27 @@ import org.json.simple.JSONObject;
 import com.ksg.api.model.ShipperTableData;
 
 public class TableBuilder {
+
     ShipperTableData data;
+
     private JSONArray vesselList;
+
     private JSONArray portList;
+
     private JSONArray dateList;
+
+    private String dateArray[][];
+
+    private String dataArrays[][];
+
     public TableBuilder(ShipperTableData data)
     {
         this.data=data;
 
         vesselList = data.getVesselList();
+
         portList = data.getPortList();
+
         dateList = data.getDateList();
     }
 
@@ -42,8 +53,7 @@ public class TableBuilder {
     }
 
     public String[][] getVessel()
-    {
-       
+    {  
         String vessels[][] = new String[vesselList.size()][2];
 
         for(int i=0;i<vesselList.size();i++)
@@ -74,8 +84,7 @@ public class TableBuilder {
         int vesselCount = vesselList.size();
         int dateArrayCount=dateList.size();
         int rowCount = vesselCount;
-        //vesselCount>dateArrayCount?vesselCount:dateArrayCount;
-        String date[][] = new String[vesselCount][];
+        dateArray = new String[vesselCount][];
 
         for(int i=0;i<rowCount;i++)
         {
@@ -94,21 +103,22 @@ public class TableBuilder {
                 }
             }
            
-            date[i] = rowArray.toArray(new String[rowArray.size()]);;
-
+            dateArray[i] = rowArray.toArray(new String[rowArray.size()]);
         }
 
 
-        return date;
+        return dateArray;
     }
 
     public String[][] getDataArray() {
 
         int vesselCount = vesselList.size();
+
         int dateArrayCount=dateList.size();
-        int rowCount = vesselCount;
-        //vesselCount>dateArrayCount?vesselCount:dateArrayCount;
-        String date[][] = new String[vesselCount][];
+
+        int rowCount = vesselCount
+        ;
+        dataArrays = new String[vesselCount][];
 
         for(int i=0;i<rowCount;i++)
         {
@@ -129,12 +139,23 @@ public class TableBuilder {
                 }
             }
            
-            date[i] = rowArray.toArray(new String[rowArray.size()]);;
-
+            dataArrays[i] = rowArray.toArray(new String[rowArray.size()]);;
         }
 
 
-        return date;
+        return dataArrays;
     }
+
+    public boolean updateData(String value, int row, int col)
+    {
+        data.setDate(row, col, value);
+
+        return true;
+    }
+
+    public String getDate(int row, int column) {
+        return data.getDate(row, column);
+    }
+    
     
 }

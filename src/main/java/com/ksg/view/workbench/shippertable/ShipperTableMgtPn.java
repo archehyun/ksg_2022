@@ -75,6 +75,8 @@ public class ShipperTableMgtPn extends MgtPn {
 
     private KSGLabel lblInputDate;
 
+    private JTextField txfSearch = new JTextField(10);
+
     public ShipperTableMgtPn()
     {
         this("광고정보관리");
@@ -103,7 +105,7 @@ public class ShipperTableMgtPn extends MgtPn {
         pnOption.add(cbxGubun);
         pnOption.add(new KSGLabel(" 항목"));
         pnOption.add(cbxSearch);
-        pnOption.add(new JTextField(10));
+        pnOption.add(txfSearch);
         
 
         KSGPanel pnControl = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
@@ -138,7 +140,8 @@ public class ShipperTableMgtPn extends MgtPn {
         
         //grid.getTable().addColumn(new KSGTableColumn(" data","데이터"));	
 		
-        grid.getTable().setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
+        grid.getTable().setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+
         grid.getTable().initComp();
 
         grid.getTable().addMouseListener(new MouseAdapter(){
@@ -164,10 +167,7 @@ public class ShipperTableMgtPn extends MgtPn {
                         e1.printStackTrace();
                         JOptionPane.showMessageDialog(ShipperTableMgtPn.this,e1.getMessage());
                     }                    
-
-                    
                 }
-                
             }
         });
 
@@ -218,7 +218,7 @@ public class ShipperTableMgtPn extends MgtPn {
 
                 param.put("id", id);
 
-                param.put("data",  pnData.getText());
+                param.put("data",  pnData.getData());
                 param.put("table_id", pnData.getParam().get("table_id"));
                 
                 param.put("inbound_from_index", pnData.getParam().get("inbound_from_index"));
@@ -248,8 +248,11 @@ public class ShipperTableMgtPn extends MgtPn {
         CommandMap param = new CommandMap(); 
         
         MyEnum selectType= (MyEnum) cbxGubun.getSelectedItem();
+
+        MyEnum searchType= (MyEnum)cbxSearch.getSelectedItem();
         
         if(selectType!=null)  param.put("table_type", selectType.getField());
+        if(searchType!=null)  param.put(searchType.getField(), txfSearch.getText());
 
 
         callApi("selectShipperTable", param);
@@ -334,9 +337,5 @@ public class ShipperTableMgtPn extends MgtPn {
         cbxSearch.loadData(codeService.selectEnumById("table_search"));
         fnSearch();
     }
-
-    
-    
-    
 }
 

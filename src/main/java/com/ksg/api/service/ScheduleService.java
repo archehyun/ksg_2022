@@ -88,6 +88,11 @@ public class ScheduleService {
      */
     public void createSchedule(Schedule param) throws IOException
     {
+        //TODO INLAND SCHEDULE
+        //TODO OUTBOUND SCHEDULE
+        //TODO INBOUND SCHEDULE
+        //TODO CONSOLE SCHEDULE
+        //TODO ROUTE SCHEDULE
 
         FileWriter fw;
         String filePath = properties.getProperty("filepath");
@@ -128,9 +133,6 @@ public class ScheduleService {
 
         Map<String, Port> portMap=portMapper.selectByPortNames(portList).stream()
                                                                         .collect(Collectors.toMap(Port::getPort_name, Function.identity()));
-
-        
-
 
 
 
@@ -292,6 +294,12 @@ public class ScheduleService {
                                     DateUtil.convertType(schedule.getTo_date(),dateFormat));
         }
     }
+    /**
+     * 
+     * @param table_id 테이블 아이디
+     * @param scheduleList 스케줄 목록
+     * @throws Exception
+     */
     public void insertScheduleBulk(String table_id,ArrayList<Schedule> scheduleList) throws Exception {
 
         this.mapper.deleteScheduleByKey(table_id);

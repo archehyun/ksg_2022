@@ -17,8 +17,6 @@ import com.google.gson.JsonObject;
 
 
 public class ShipperTableData {
-    
-
 
     JSONArray dateList = new JSONArray();
     
@@ -83,7 +81,6 @@ public class ShipperTableData {
         vesselList = (JSONArray) jsonObject.get(VESSEL_LIST);
 
         portList  = (JSONArray) jsonObject.get(PORT_LIST);
-        
     }
 
     public void setPorts(String[] ports) {
@@ -98,11 +95,12 @@ public class ShipperTableData {
             portList.add(portInfo);
         }
     }
+
     public void setDate(int row, int col, String date)
     {
         JSONArray list = (JSONArray) dateList.get(row);
        
-        String obj=(String) list.get(col);
+       // String obj=(String) list.get(col);
 
         list.set(col, date);
     }
@@ -116,6 +114,10 @@ public class ShipperTableData {
     }
     public JSONArray getDateList() {
         return dateList;
+    }
+
+    public String getDate(int row, int column) {
+        return null;
     }
 
 

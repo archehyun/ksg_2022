@@ -2,6 +2,7 @@ package com.ksg.view.workbench.masterdata;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -26,6 +27,7 @@ import com.ksg.view.workbench.masterdata.dialog.CompanyUpdatePopup;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
@@ -35,9 +37,10 @@ import java.awt.event.ActionEvent;
 import java.util.Calendar;
 import java.util.List;
 
+
 @Component("CompanyMgtPn")
 public class CompanyMgtPn extends MgtPn{
-    
+    JFileChooser fc;
     private KSGDataGrid grid;
     private JTextField txfCompanyName = new JTextField(10);
     private JButton butInsert = new IconButton("images/icons8-plus-+-64.png");
@@ -71,13 +74,13 @@ public class CompanyMgtPn extends MgtPn{
         int level[]={50,100};
 
         grid = new KSGDataGrid(level);
-        grid.getTable().addColumn(new KSGTableColumn("rowNum","순번",50));
+        grid.getTable().addColumn(new KSGTableColumn("rowNum","순번",70,70, JLabel.RIGHT));
         grid.getTable().addColumn(new KSGTableColumn("company_name","선사명"));
 		grid.getTable().addColumn(new KSGTableColumn("company_abbr","선사명 약어"));
 		grid.getTable().addColumn(new KSGTableColumn("agent_name","에이전트 명"));
 		grid.getTable().addColumn(new KSGTableColumn("agent_abbr","에이전트 약어"));		
         grid.getTable().addColumn(new KSGTableColumn("contents","비고"));		
-		grid.getTable().addColumn(new KSGTableColumn("event_date","이벤트 일자"));       
+		grid.getTable().addColumn(new KSGTableColumn("event_date","이벤트 일자",120, 120, JLabel.CENTER));       
 
         grid.getTable().addMouseListener(new TableSelectListner());
 
@@ -91,11 +94,15 @@ public class CompanyMgtPn extends MgtPn{
 
         butDownload.addActionListener(this);
 
+        butUpload.addActionListener(this);
+
         butInsert.setActionCommand("insert");
 
         butDelete.setActionCommand("delete");
 
         butDownload.setActionCommand("export");
+
+        butUpload.setActionCommand("import");
 
         pnInfo.add(butInsert);
         pnInfo.add(butDelete);
@@ -230,6 +237,21 @@ public class CompanyMgtPn extends MgtPn{
             
             callApi("exportCompany", param);
 
+        }
+        else if("import".equals(command))
+        {
+            fc = new JFileChooser();
+            fc.setCurrentDirectory(new File("./"));
+            int returnVal = fc.showOpenDialog(CompanyMgtPn.this);
+ 
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                File file = fc.getSelectedFile();
+                //This is where a real application would open the file.
+               // log.append("Opening: " + file.getName() + "." + newline);
+               System.out.println("filename:"+file.getName());
+            } else {
+                //log.append("Open command cancelled by user." + newline);
+            }
         }
     }
 

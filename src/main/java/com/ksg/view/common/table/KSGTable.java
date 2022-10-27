@@ -112,19 +112,21 @@ public class KSGTable extends JTable implements KSGStyle{
 	 */
     public void setStyle(HashMap<String, Object> param)
 	{
-		COLUMN_HEAD_COLOR = ViewUtil.getColorRGB(propeties.getProperty("table.header.background.color"));
+		COLUMN_HEAD_COLOR 	= ViewUtil.getColorRGB(propeties.getProperty("table.header.background.color"));
 		
-		HEADER_HEIGHT=Integer.parseInt(propeties.getProperty("table.header.height"));
+		HEADER_HEIGHT		= Integer.parseInt(propeties.getProperty("table.header.height"));
 
-		ROW_HEIGHT=Integer.parseInt(propeties.getProperty("table.row.height"));
+		ROW_HEIGHT			= Integer.parseInt(propeties.getProperty("table.row.height"));
 
-		GRID_COLOR = ViewUtil.getColorRGB(propeties.getProperty("table.gird.color"));
+		GRID_COLOR 			= ViewUtil.getColorRGB(propeties.getProperty("table.gird.color"));
 		
-		CELL_ODD_COLOR = ViewUtil.getColorRGB(propeties.getProperty("table.cell.odd.background.color"));
+		CELL_ODD_COLOR 		= ViewUtil.getColorRGB(propeties.getProperty("table.cell.odd.background.color"));
 
-		FONT_SIZE = Integer.parseInt(propeties.getProperty("table.font.size"));
+		FONT_SIZE 			= Integer.parseInt(propeties.getProperty("table.font.size"));
 		
-		boolean showline =Boolean.valueOf(propeties.getProperty("table.grid.verticallines"));
+		boolean showline 	= Boolean.valueOf(propeties.getProperty("table.grid.verticallines"));
+
+		this.setShowVerticalLines(true);
 		
 
 		// this.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
@@ -155,7 +157,7 @@ public class KSGTable extends JTable implements KSGStyle{
 
 			DefaultTableCellRenderer cellRenderer = (DefaultTableCellRenderer) this.getDefaultRenderer(getClass());
 
-			// TableColumn namecol = colmodel.getColumn(i);
+			TableColumn namecol = colmodel.getColumn(i);
 
 			// namecol.setCellRenderer(cellRenderer);
 
@@ -166,17 +168,20 @@ public class KSGTable extends JTable implements KSGStyle{
 
 			if(col.maxSize!=0)
 			{
-				col.setMaxWidth(col.size);
+				
+				namecol.setMaxWidth(col.maxSize);
+				
+
 			}
 
 			if(col.minSize!=0)
 			{
-				col.setMinWidth(col.minSize);
+				namecol.setMinWidth(col.minSize);
 			}
 
 			if(col.size!=0)
 			{
-				col.setPreferredWidth(col.size);
+				namecol.setPreferredWidth(col.size);				
 			}
 		}
 

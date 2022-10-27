@@ -105,12 +105,12 @@ public class PortMgtPn extends MgtPn{
         int level[]={50,100};
 
         grid = new KSGDataGrid(level);        
-        grid.getTable().addColumn(new KSGTableColumn("rowNum","순번",50));
+        grid.getTable().addColumn(new KSGTableColumn("rowNum","순번",70,70, JLabel.RIGHT));
         grid.getTable().addColumn(new KSGTableColumn("port_name","항구명"));
 		grid.getTable().addColumn(new KSGTableColumn("port_nationality","나라"));
 		grid.getTable().addColumn(new KSGTableColumn("port_area","지역"));
 		grid.getTable().addColumn(new KSGTableColumn("area_code","지역코드"));		
-        grid.getTable().addColumn(new KSGTableColumn("event_date","등록일"));		
+        grid.getTable().addColumn(new KSGTableColumn("event_date","등록일", 100));		
 		grid.getTable().addMouseListener(new TableSelectListner());
 
         grid.getTable().initComp();

@@ -63,13 +63,15 @@ public class CodeMgtPn extends MgtPn{
     public CodeMgtPn(String name)
     {
         super(name);
+
         this.addComponentListener(this);
 
-        setController(new CodeController());        
+        this.setController(new CodeController());        
 
         this.setName(name);
 
         this.add(buildCenter());
+
         this.add(buildSearch(),BorderLayout.NORTH);
         
     }
@@ -79,15 +81,19 @@ public class CodeMgtPn extends MgtPn{
         int level[]={50,100};
 
         gridHeader = new KSGDataGrid(level);
+
         gridDetail = new KSGDataGrid(level);
 
-
         gridHeader.getTable().addColumn(new KSGTableColumn("rowNum","순번",50));
+
         gridHeader.getTable().addColumn(new KSGTableColumn("code_class_id","코드 ID"));
+
 		gridHeader.getTable().addColumn(new KSGTableColumn("code_class_name","코드 명"));
+
         gridHeader.getTable().addColumn(new KSGTableColumn("event_date","등록일"));
 
         gridHeader.getTable().getSelectionModel().addListSelectionListener(selectionListner);
+
         gridHeader.getTable().initComp();         
 
         gridDetail.getTable().addColumn(new KSGTableColumn("rowNum","순번",50));
@@ -98,43 +104,61 @@ public class CodeMgtPn extends MgtPn{
         gridDetail.getTable().addColumn(new KSGTableColumn("event_date","등록일"));        
 
         gridDetail.getTable().initComp();
+
         gridDetail.getTable().addMouseListener(new TableSelectListner());
 
         KSGPanel pnCodeHeaderMain = new KSGPanel();
+
         KSGPanel pnCodeHeaderInfo = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
+
         pnCodeHeaderMain.setPreferredSize(new Dimension(400,0));
 
 
         butInsert.setActionCommand("insert");
+
         butInsert.addActionListener(this);
 
         butDelete.setActionCommand("delete");
+
         butDelete.addActionListener(this);
 
         pnCodeHeaderInfo.add(butInsert);
+
         pnCodeHeaderInfo.add(butDelete);
 
         pnCodeHeaderMain.add(pnCodeHeaderInfo,BorderLayout.NORTH);
+
         pnCodeHeaderMain.add(gridHeader);
 
         KSGPanel pnCodeDetailMain = new KSGPanel();
+
         KSGPanel pnCodeDetailInfo = new KSGPanel(new FlowLayout(FlowLayout.RIGHT));
 
         
         butInsertDetail.setActionCommand("insertDetail");
+
         butInsertDetail.addActionListener(this);
+
         butDeleteDetail.setActionCommand("deleteDetail");
+
         butDeleteDetail.addActionListener(this);
+
         pnCodeDetailInfo.add(butInsertDetail);
+
         pnCodeDetailInfo.add(butDeleteDetail);
 
         pnCodeDetailMain.add(pnCodeDetailInfo,BorderLayout.NORTH);
+
         pnCodeDetailMain.add(gridDetail);
 
         KSGPanel pnMain =new KSGPanel(new BorderLayout(5,5));
+
         pnMain.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 5));
+
         pnMain.add(pnCodeHeaderMain,BorderLayout.WEST);
+
         pnMain.add(pnCodeDetailMain); 
+
         return pnMain;     
     }
 
